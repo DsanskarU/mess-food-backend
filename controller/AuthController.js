@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 //SIGNUP? REGISTER
 exports.signUp = (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password,role } = req.body;
     if (!name || !email || !password) {
         return res.status(400).json({ message: "All fields are required" });
     }
@@ -21,7 +21,7 @@ exports.signUp = (req, res) => {
             //hash password
             const hashedPassword = await bcrypt.hash(password, 10);
 
-            db.query("insert into users (name,email,password,role) values (?,?,?,'STUDENT')", [name, email, hashedPassword],
+            db.query("insert into users (name,email,password,role) values (?,?,?,?)", [name, email, hashedPassword,role],
                 (err) => {
                     if (err) {
                         return res.status(500).send(err);
